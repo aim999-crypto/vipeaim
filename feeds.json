@@ -1,0 +1,22 @@
+[
+  {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/feed/"
+  },
+  {
+    "name": "The Verge",
+    "url": "https://www.theverge.com/rss/index.xml"
+  },
+  {
+    "name": "Wired",
+    "url": "https://www.wired.com/feed/rss"
+  },
+  {
+    "name": "Ars Technica",
+    "url": "https://feeds.arstechnica.com/arstechnica/index"
+  },
+  {
+    "name": "Google AI Blog",
+    "url": "https://blog.google/technology/ai/rss/"
+  }
+]
