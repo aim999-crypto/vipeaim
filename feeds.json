@@ -1,22 +1,47 @@
 [
   {
-    "name": "TechCrunch",
+    "category": "Technology",
+    "source": "TechCrunch",
     "url": "https://techcrunch.com/feed/"
   },
   {
-    "name": "The Verge",
+    "category": "Technology",
+    "source": "The Verge",
     "url": "https://www.theverge.com/rss/index.xml"
   },
   {
-    "name": "Wired",
-    "url": "https://www.wired.com/feed/rss"
-  },
-  {
-    "name": "Ars Technica",
+    "category": "Technology",
+    "source": "Ars Technica",
     "url": "https://feeds.arstechnica.com/arstechnica/index"
   },
   {
-    "name": "Google AI Blog",
-    "url": "https://blog.google/technology/ai/rss/"
+    "category": "Movies",
+    "source": "Variety Film",
+    "url": "https://variety.com/v/film/feed/"
+  },
+  {
+    "category": "Series",
+    "source": "Variety TV",
+    "url": "https://variety.com/v/tv/feed/"
+  },
+  {
+    "category": "Gaming",
+    "source": "IGN",
+    "url": "https://feeds.feedburner.com/ign/all"
+  },
+  {
+    "category": "Anime",
+    "source": "Anime News Network",
+    "url": "https://www.animenewsnetwork.com/all/rss.xml"
+  },
+  {
+    "category": "Science",
+    "source": "NASA",
+    "url": "https://www.nasa.gov/feed/"
+  },
+  {
+    "category": "Entertainment",
+    "source": "Deadline",
+    "url": "https://deadline.com/feed/"
   }
 ]

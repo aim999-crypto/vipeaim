@@ -1,81 +1,63 @@
-# Daily Tech BD — Telegram Automation
+# vipeAIM 2.0 — Telegram Automation
 
-A phone-friendly GitHub Actions project that publishes up to five fresh tech stories per day to a Telegram channel. Posts are bilingual (Bangla + English), HTML-formatted, and include a source link.
+## Features
+- Up to 10 scheduled publishing attempts per day (one story per GitHub Actions run).
+- RSS feeds for tech, movies, TV/series, gaming, anime, science and entertainment.
+- Gemini-generated factual Bengali headline + Bengali and English summaries. Without Gemini, safe source-title/summary fallback is used.
+- Branded 1280×720 graphic thumbnail with category colors and Bengali headline.
+- Duplicate protection, publication log, JSON analytics and companion static website.
+- Designed for GitHub mobile/browser management.
 
-## 1) Create a Telegram bot
+## Required GitHub Secrets
+In repository → Settings → Secrets and variables → Actions → New repository secret:
+1. `TELEGRAM_BOT_TOKEN`: BotFather token.
+2. `TELEGRAM_CHANNEL_ID`: public channel `@channelusername` or private numeric `-100...` ID.
+3. `GEMINI_API_KEY`: optional, for AI-written Bengali headlines and bilingual summaries.
 
-1. Open Telegram and message **@BotFather**.
-2. Send `/newbot`, follow the prompts, and copy the bot token.
-3. Add the bot to your Telegram channel as an **administrator** with permission to post messages.
-4. For a public channel, `TELEGRAM_CHANNEL_ID` can be `@YourChannelUsername`. For a private channel, use its numeric chat ID (often starts with `-100`).
+The bot must be an administrator in the channel with permission to post. Never put tokens in source code or share them in screenshots.
 
-Never share your bot token or API keys in chat, code, screenshots, or a public repository.
+## Install from Android
+1. Download and unzip this project.
+2. In `aim999-crypto/vipeaim`, upload all files/folders to the `main` branch. Keep exact paths, especially `.github/workflows/daily-tech.yml`.
+3. If GitHub says a file already exists, open that file and use Edit/replace, or upload the project files one-by-one with exact existing paths. Do not create a second copy such as `daily-tech (1).yml`.
+4. Enable Actions: Settings → Actions → General → Allow all actions.
+5. Set Workflow permissions to **Read and write permissions** and Save.
+6. Open Actions → vipeAIM Daily Publisher → Run workflow.
+7. Inspect the run. A successful `Publish one fresh story` step means Telegram accepted the post.
 
-## 2) Upload this project to GitHub from Android
+## Schedule
+10 scheduled runs in UTC: 02,04,06,08,10,12,14,16,18,20. Bangladesh time (UTC+6): 08:00,10:00,12:00,14:00,16:00,18:00,20:00,22:00,00:00,02:00. Each run publishes one fresh article if available. GitHub may delay scheduled jobs. This is a 10-post target, not a guarantee: RSS sources may not provide 10 unique fresh stories every day.
 
-1. Download and extract this ZIP on your phone.
-2. In GitHub, create a new repository, e.g. `daily-tech-telegram`.
-3. Upload all files and folders from the extracted project. Keep `.github/workflows/daily-tech.yml` in exactly that path.
-4. Ensure the repository is not exposing any secrets. The bot token and keys belong only in GitHub Secrets.
+## Website
+Optional companion website is included in `website/`. To deploy:
+1. Repository Settings → Pages → Build and deployment → Source: GitHub Actions.
+2. Run `Deploy vipeAIM companion website` manually, or wait for a push touching watched files.
+3. The Pages URL appears in Settings → Pages.
+The publisher mirrors posts and analytics into `website/data/`. Add About, Contact, Privacy Policy, Editorial Policy, original articles and a custom domain before applying for AdSense. Approval is never guaranteed.
 
-## 3) Add GitHub Secrets
+## Monetization: important limitations
+- Affiliate: add an approved link in `affiliate_links.json`, set `enabled` to `true`, and use a matching category (or `All`). The bot adds a labeled inline button and affiliate disclosure. Use products relevant to the post category. The affiliate network, not this bot, confirms conversions/commission.
+- Sponsored: add a real sponsor name/label/URL in `sponsors.json` and set `enabled` to `true`. The bot adds a clearly labeled sponsored section and button to posts. Enable only during a real paid campaign and only after editorial/advertising approval.
+- AdSense: AdSense does not monetize Telegram posts. It requires a separate eligible website, original useful content, policy compliance and approval. The included website is a simple companion feed, not enough by itself to guarantee AdSense approval.
+- Telegram: native ad revenue/Stars eligibility depends on current Telegram terms, region and account eligibility. Check Telegram channel monetization settings. Code cannot enable or guarantee payouts.
+- Tracking: publication log and UTM tags track published links/source campaigns when connected to analytics. Telegram Bot API does not expose individual link clicks. No fake revenue or conversion counts are generated.
 
-Open repository → **Settings → Secrets and variables → Actions → New repository secret**.
-
-Create these secrets:
-
-| Name | Value |
-|---|---|
-| `TELEGRAM_BOT_TOKEN` | Token from @BotFather |
-| `TELEGRAM_CHANNEL_ID` | `@YourChannelUsername` or private channel ID |
-| `GEMINI_API_KEY` | Optional Google AI Studio API key |
-
-Without `GEMINI_API_KEY`, the project still posts source-based fallback text, but the summaries will not be AI-written. Gemini API usage may have quotas or charges depending on Google's current terms and your account.
-
-## 4) Enable Actions
-
-1. Open the repository's **Actions** tab.
-2. If prompted, enable GitHub Actions.
-3. Open **Daily Tech Telegram Publisher**.
-4. Tap **Run workflow** to test a post immediately.
-5. Check your Telegram channel and the Actions run log.
-
-The schedule is set to Bangladesh time (UTC+6): 08:00, 11:00, 14:00, 17:00 and 20:00.
-
-## How the automation works
-
-- Reads the RSS feeds listed in `feeds.json`.
-- Selects one recent article not already published.
-- Uses Gemini, when configured, to create a concise bilingual summary.
-- Sends an HTML-formatted message through the official Telegram Bot API.
-- Saves published article IDs in `state.json` to reduce duplicates.
-
-## Important limitations
-
-- The schedule attempts five publishing runs per day; it cannot guarantee five posts if feeds have fewer than five new eligible stories, if a feed is down, or if GitHub Actions is delayed.
-- GitHub scheduled workflows can be delayed and may be disabled after long periods of repository inactivity. Use **Run workflow** for manual testing.
-- This project sends text posts with source links. It does not copy or rehost publisher photos.
-- Review AI-generated summaries and sources periodically. AI can make mistakes; source links are included so readers can verify.
-- Respect publisher terms, RSS feed terms, copyright, and attribution requirements.
-- GitHub Actions free usage limits and Google's Gemini API terms/quotas may change.
-
-## Customize feeds
-
-Edit `feeds.json` and add/remove RSS feeds in this format:
-
-```json
-[
-  {"name": "Example Tech", "url": "https://example.com/feed.xml"}
-]
-```
-
-## Change post times
-
-Edit the five cron expressions in `.github/workflows/daily-tech.yml`. GitHub cron uses UTC. Bangladesh is UTC+6.
+## Customize
+- `feeds.json`: RSS sources and categories.
+- `config.json`: freshness window and Gemini model.
+- `.github/workflows/daily-tech.yml`: posting schedule.
+- `website/index.html`: companion site design.
+- `data/publication_log.csv`: append-only publishing ledger.
+- `state.json`: deduplication history.
 
 ## Troubleshooting
+- No workflow runs: check Actions enabled, workflow file path and default branch.
+- Telegram 401: token invalid; rotate it via BotFather and update secret.
+- Telegram 403: make bot channel admin and grant post permission; verify channel ID.
+- No post sent: no fresh unseen RSS article in configured age window; add trusted feeds or adjust `max_age_hours`.
+- Gemini errors: fallback copy is used; check key/quota.
+- Bengali thumbnail font: runner downloads Noto Sans Bengali. If that fails, place Noto Sans Bengali TTF files in `assets/`.
+- Push rejected: wait for current run to finish, then rerun; workflow rebases before push.
 
-- **Telegram 401:** check `TELEGRAM_BOT_TOKEN`.
-- **Telegram 403 / chat not found:** add the bot as channel admin and check `TELEGRAM_CHANNEL_ID`.
-- **No post:** check the Actions log; there may be no new articles within the 72-hour window.
-- **No Bangla AI summary:** verify `GEMINI_API_KEY`; without it the script uses a fallback template.
+## Editorial and copyright
+The thumbnail is a custom graphic, not a copied film poster. News summaries must be factual and linked to the original publisher. Respect RSS terms, image licenses, copyright and corrections. Do not fabricate breaking news, reviews or release dates.

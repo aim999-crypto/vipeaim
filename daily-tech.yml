@@ -1,56 +1,50 @@
-
-name: Daily Tech Telegram Publisher
-
+name: vipeAIM Daily Publisher
 on:
   workflow_dispatch:
   schedule:
+    # UTC schedule: Bangladesh time UTC+6; one post per run
     - cron: "0 2 * * *"
-    - cron: "0 5 * * *"
+    - cron: "0 4 * * *"
+    - cron: "0 6 * * *"
     - cron: "0 8 * * *"
-    - cron: "0 11 * * *"
+    - cron: "0 10 * * *"
+    - cron: "0 12 * * *"
     - cron: "0 14 * * *"
-
+    - cron: "0 16 * * *"
+    - cron: "0 18 * * *"
+    - cron: "0 20 * * *"
 permissions:
   contents: write
-
 concurrency:
-  group: daily-tech-publisher
+  group: vipeaim-publisher
   cancel-in-progress: false
-
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
+    timeout-minutes: 8
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-
-      - name: Publish Tech News
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Publish one fresh story
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash
-          MAX_AGE_HOURS: "72"
         run: python main.py
-
-      - name: Save Posted News History
+      - name: Save duplicate history and site data
         run: |
-          git config user.name "Daily Tech Bot"
+          git config user.name "vipeAIM Publisher"
           git config user.email "actions@users.noreply.github.com"
-          git add state.json
+          git add state.json data/ website/data/
           if ! git diff --cached --quiet; then
-            git commit -m "Update news history"
-            git push
+            git commit -m "Update vipeAIM publication history"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi

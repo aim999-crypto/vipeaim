@@ -1,0 +1,16 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>vipeAIM — Tech & Entertainment</title><meta name="description" content="বাংলা ও English-এ Technology, AI, Movies, Series, Gaming ও Entertainment updates.">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#f5f7ff;font-family:system-ui,sans-serif}header{padding:30px 18px;background:linear-gradient(120deg,#111a38,#29134a);border-bottom:1px solid #34405d}.wrap{max-width:900px;margin:auto}h1{margin:0;font-size:34px}.muted{color:#aeb9d4}.tag{color:#9ee8ff;font-size:12px;letter-spacing:2px}main{padding:20px 14px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.stat,.post{background:#151d33;border:1px solid #293653;border-radius:16px;padding:15px}.stat b{display:block;font-size:23px}.post{margin:12px 0}.cat{font-size:11px;color:#8fe5ef;font-weight:700}h2{font-size:20px;line-height:1.5;margin:8px 0}.post p{color:#c4cde0;line-height:1.7}a{color:#8edcff;text-decoration:none}.btn{display:inline-block;padding:10px 14px;border-radius:10px;background:#3155a5;color:white}footer{padding:25px;color:#9da9c4;text-align:center}
+</style></head><body><header><div class="wrap"><div class="tag">GLOBAL TECH • MOVIES • SERIES • GAMING</div><h1>vipeAIM</h1><div class="muted">প্রযুক্তি ও বিনোদনের দুনিয়ার খবর — বাংলা + English</div></div></header>
+<main class="wrap"><div class="stats"><div class="stat"><b id="total">—</b><span class="muted">Published posts</span></div><div class="stat"><b>10/day</b><span class="muted">Publishing target</span></div><div class="stat"><b>BN + EN</b><span class="muted">Bilingual updates</span></div></div>
+<h2>সর্বশেষ আপডেট | Latest Updates</h2><div id="posts" class="muted">Loading…</div></main><footer>© <span id="year"></span> vipeAIM · Affiliate and sponsored links must be disclosed.</footer>
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+Promise.all([fetch('data/posts.json').then(r=>r.json()).catch(()=>[]),fetch('data/analytics.json').then(r=>r.json()).catch(()=>({}))]).then(([posts,stats])=>{
+document.getElementById('total').textContent=stats.total_posts||posts.length||0;const root=document.getElementById('posts');
+if(!posts.length){root.textContent='নতুন পোস্ট প্রকাশ হলে এখানে দেখা যাবে।';return}
+root.innerHTML=posts.slice(0,30).map(p=>`<article class="post"><div class="cat">${esc(p.category)}</div><h2>${esc(p.headline_bn)}</h2><p>${esc(p.summary_bn)}</p><p class="muted">${esc(p.summary_en)}</p><a class="btn" href="${safe(p.url)}" target="_blank" rel="noopener">সম্পূর্ণ খবর পড়ুন</a></article>`).join('')});
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function safe(s){try{let u=new URL(s);return ['http:','https:'].includes(u.protocol)?u.href:'#'}catch(e){return '#'}}
+</script></body></html>

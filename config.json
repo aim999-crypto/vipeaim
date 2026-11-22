@@ -1,0 +1,12 @@
+{
+  "brand": "vipeAIM",
+  "timezone": "Asia/Dhaka",
+  "posts_per_day": 10,
+  "max_age_hours": 72,
+  "gemini_model": "gemini-2.5-flash",
+  "monetization": {
+    "affiliate_disclosure_bn": "এই পোস্টে Affiliate Link থাকতে পারে। লিংকের মাধ্যমে কেনাকাটা করলে vipeAIM কমিশন পেতে পারে।",
+    "sponsored_label": "স্পন্সরড | Sponsored",
+    "adsense_note": "AdSense Telegram-এ নয়; আলাদা অনুমোদিত ওয়েবসাইটে প্রযোজ্য।"
+  }
+}
