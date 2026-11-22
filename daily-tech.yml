@@ -1,9 +1,9 @@
+
 name: Daily Tech Telegram Publisher
 
 on:
   workflow_dispatch:
   schedule:
-    # Bangladesh time: 08:00, 11:00, 14:00, 17:00, 20:00 (UTC+6)
     - cron: "0 2 * * *"
     - cron: "0 5 * * *"
     - cron: "0 8 * * *"
@@ -20,22 +20,23 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Publish one fresh tech story
+      - name: Publish Tech News
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
@@ -44,12 +45,12 @@ jobs:
           MAX_AGE_HOURS: "72"
         run: python main.py
 
-      - name: Save duplicate history
+      - name: Save Posted News History
         run: |
-          git config user.name "daily-tech-bot"
+          git config user.name "Daily Tech Bot"
           git config user.email "actions@users.noreply.github.com"
           git add state.json
           if ! git diff --cached --quiet; then
-            git commit -m "Update published article history"
+            git commit -m "Update news history"
             git push
           fi
